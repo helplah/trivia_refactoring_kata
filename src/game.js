@@ -22,28 +22,22 @@ module.exports = function Game() {
   };
 
   var currentCategory = function() {
-    /*
     switch (places[currentPlayer]){
-      case 0 || 4 || 8:
-        return "Pop";
-      case 1 || 5 || 9:
+      case 0:
+      case 4:
+      case 8:
+        return "Pop";  
+      case 1:
+      case 5:
+      case 9:
         return "Science";
-      case 2 || 6 || 10:
+      case 2:
+      case 6:
+      case 10:
         return "Sports";
       default:
         return "Rock";
-    }*/
-
-    if (places[currentPlayer] == 0) return "Pop";
-    if (places[currentPlayer] == 4) return "Pop";
-    if (places[currentPlayer] == 8) return "Pop";
-    if (places[currentPlayer] == 1) return "Science";
-    if (places[currentPlayer] == 5) return "Science";
-    if (places[currentPlayer] == 9) return "Science";
-    if (places[currentPlayer] == 2) return "Sports";
-    if (places[currentPlayer] == 6) return "Sports";
-    if (places[currentPlayer] == 10) return "Sports";
-    return "Rock"; 
+    }
   };
 
   this.createRockQuestion = function(index) {
