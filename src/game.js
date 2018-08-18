@@ -16,11 +16,11 @@ module.exports = function Game() {
   // code busuk... mentally record smth is wrong
   let isGettingOutOfPenaltyBox = false;
 
-  let didPlayerWin = function() {
+  const didPlayerWin = function() {
     return !(purses[currentPlayer] == 6);
   };
 
-  var currentCategory = function() {
+  const currentCategory = function() {
     switch (places[currentPlayer]) {
       case 0:
       case 4:
@@ -53,10 +53,10 @@ module.exports = function Game() {
 
   // removed this.HowManyPlayers since u can use players.length instead
   this.add = function(playerName) {
-    players.push(playerName);
-    places[players.length - 1] = 0;
-    purses[players.length - 1] = 0;
-    inPenaltyBox[players.length - 1] = false;
+    const playerCount = players.push(playerName) - 1;
+    places[playerCount] = 0;
+    purses[playerCount] = 0;
+    inPenaltyBox[playerCount] = false;
 
     // one possible refactoring is to convert all log to be able to change the destination in one shot
     log(playerName + " was added");
