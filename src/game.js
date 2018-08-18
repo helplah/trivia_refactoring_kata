@@ -1,7 +1,6 @@
 module.exports = function Game() {
-  /* change var to let or const
-    instead of new Array, use [];
-  */
+  // change var to let or const
+  // instead of new Array, use [];
   const players = [];
   const places = [6];
   const purses = [6];
@@ -41,7 +40,6 @@ module.exports = function Game() {
   };
 
   //removed this.createRockQuestions func
-
   for (var i = 0; i < 50; i++) {
     popQuestions.push("Pop Question " + i);
     scienceQuestions.push("Science Question " + i);
@@ -50,10 +48,7 @@ module.exports = function Game() {
     rockQuestions.push("Rock Question " + i);
   }
 
-  // is this being used??
-  this.isPlayable = function(howManyPlayers) {
-    return howManyPlayers >= 2;
-  };
+  // removed this.isPlayable func as it is not being used
 
   this.add = function(playerName) {
     players.push(playerName);
