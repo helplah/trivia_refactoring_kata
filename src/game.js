@@ -40,6 +40,7 @@ module.exports = function Game() {
   };
 
   //removed this.createRockQuestions func
+
   for (var i = 0; i < 50; i++) {
     popQuestions.push("Pop Question " + i);
     scienceQuestions.push("Science Question " + i);
@@ -50,21 +51,18 @@ module.exports = function Game() {
 
   // removed this.isPlayable func as it is not being used
 
+  // removed this.HowManyPlayers since u can use players.length instead
   this.add = function(playerName) {
     players.push(playerName);
-    places[this.howManyPlayers() - 1] = 0;
-    purses[this.howManyPlayers() - 1] = 0;
-    inPenaltyBox[this.howManyPlayers() - 1] = false;
+    places[players.length - 1] = 0;
+    purses[players.length - 1] = 0;
+    inPenaltyBox[players.length - 1] = false;
 
     // one possible refactoring is to convert all log to be able to change the destination in one shot
     log(playerName + " was added");
     log("They are player number " + players.length);
 
     return true;
-  };
-
-  this.howManyPlayers = function() {
-    return players.length;
   };
 
   var askQuestion = function() {
