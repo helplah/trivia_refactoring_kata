@@ -1,22 +1,39 @@
 module.exports = function Game() {
-  var players = new Array();
-  var places = new Array(6);
-  var purses = new Array(6);
-  var inPenaltyBox = new Array(6);
+  /* change var to let or const
+    instead of new Array, use [];
+  */
+  const players = [];
+  const places = [6];
+  const purses = [6];
+  const inPenaltyBox = [6];
 
-  var popQuestions = new Array();
-  var scienceQuestions = new Array();
-  var sportsQuestions = new Array();
-  var rockQuestions = new Array();
+  const popQuestions = [];
+  const scienceQuestions = [];
+  const sportsQuestions = [];
+  const rockQuestions = [];
 
-  var currentPlayer = 0;
-  var isGettingOutOfPenaltyBox = false;
+  let currentPlayer = 0;
+  // instead of array of values, there's only one value here. mismatch.
+  // code busuk... mentally record smth is wrong
+  let isGettingOutOfPenaltyBox = false;
 
-  var didPlayerWin = function() {
+  let didPlayerWin = function() {
     return !(purses[currentPlayer] == 6);
   };
 
   var currentCategory = function() {
+    /*
+    switch (places[currentPlayer]){
+      case 0 || 4 || 8:
+        return "Pop";
+      case 1 || 5 || 9:
+        return "Science";
+      case 2 || 6 || 10:
+        return "Sports";
+      default:
+        return "Rock";
+    }*/
+
     if (places[currentPlayer] == 0) return "Pop";
     if (places[currentPlayer] == 4) return "Pop";
     if (places[currentPlayer] == 8) return "Pop";
@@ -26,7 +43,7 @@ module.exports = function Game() {
     if (places[currentPlayer] == 2) return "Sports";
     if (places[currentPlayer] == 6) return "Sports";
     if (places[currentPlayer] == 10) return "Sports";
-    return "Rock";
+    return "Rock"; 
   };
 
   this.createRockQuestion = function(index) {
@@ -37,9 +54,11 @@ module.exports = function Game() {
     popQuestions.push("Pop Question " + i);
     scienceQuestions.push("Science Question " + i);
     sportsQuestions.push("Sports Question " + i);
+    // inconsistency - four qns; three created the same way, one created differently
     rockQuestions.push(this.createRockQuestion(i));
   }
 
+  // is this being used??
   this.isPlayable = function(howManyPlayers) {
     return howManyPlayers >= 2;
   };
@@ -50,6 +69,7 @@ module.exports = function Game() {
     purses[this.howManyPlayers() - 1] = 0;
     inPenaltyBox[this.howManyPlayers() - 1] = false;
 
+    // one possible refactoring is to convert all console.log to be able to change the destination in one shot
     console.log(playerName + " was added");
     console.log("They are player number " + players.length);
 
@@ -61,6 +81,9 @@ module.exports = function Game() {
   };
 
   var askQuestion = function() {
+    // 50 qns, what if .shift() happen 51 times
+    // refactoring does not bother with changing the behaviour
+    // after refactoring u can remove the bug
     if (currentCategory() == "Pop") console.log(popQuestions.shift());
     if (currentCategory() == "Science") console.log(scienceQuestions.shift());
     if (currentCategory() == "Sports") console.log(sportsQuestions.shift());
@@ -71,6 +94,7 @@ module.exports = function Game() {
     console.log(players[currentPlayer] + " is the current player");
     console.log("They have rolled a " + roll);
 
+    // there are some duplicate codes....
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {
         isGettingOutOfPenaltyBox = true;
