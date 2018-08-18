@@ -66,13 +66,23 @@ module.exports = function Game() {
   };
 
   var askQuestion = function() {
-    // 50 qns, what if .shift() happen 51 times
-    // refactoring does not bother with changing the behaviour
-    // after refactoring u can remove the bug
-    if (currentCategory() == "Pop") log(popQuestions.shift());
-    if (currentCategory() == "Science") log(scienceQuestions.shift());
-    if (currentCategory() == "Sports") log(sportsQuestions.shift());
-    if (currentCategory() == "Rock") log(rockQuestions.shift());
+    /* there are 50 qns, what if .shift() happen 51 times
+      refactoring does not bother with changing the behaviour, after refactoring u can remove the bug
+    */
+    switch (currentCategory()) {
+      case "Pop":
+        log(popQuestions.shift());
+        break;
+      case "Science":
+        log(scienceQuestions.shift());
+        break;
+      case "Sports":
+        log(sportsQuestions.shift());
+        break;
+      case "Rock":
+        log(rockQuestions.shift());
+        break;
+    }
   };
 
   this.roll = function(roll) {
