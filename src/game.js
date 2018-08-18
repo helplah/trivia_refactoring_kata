@@ -22,11 +22,11 @@ module.exports = function Game() {
   };
 
   var currentCategory = function() {
-    switch (places[currentPlayer]){
+    switch (places[currentPlayer]) {
       case 0:
       case 4:
       case 8:
-        return "Pop";  
+        return "Pop";
       case 1:
       case 5:
       case 9:
@@ -40,16 +40,14 @@ module.exports = function Game() {
     }
   };
 
-  this.createRockQuestion = function(index) {
-    return "Rock Question " + index;
-  };
+  //removed this.createRockQuestions func
 
   for (var i = 0; i < 50; i++) {
     popQuestions.push("Pop Question " + i);
     scienceQuestions.push("Science Question " + i);
     sportsQuestions.push("Sports Question " + i);
     // inconsistency - four qns; three created the same way, one created differently
-    rockQuestions.push(this.createRockQuestion(i));
+    rockQuestions.push("Rock Question " + i);
   }
 
   // is this being used??
@@ -63,9 +61,9 @@ module.exports = function Game() {
     purses[this.howManyPlayers() - 1] = 0;
     inPenaltyBox[this.howManyPlayers() - 1] = false;
 
-    // one possible refactoring is to convert all console.log to be able to change the destination in one shot
-    console.log(playerName + " was added");
-    console.log("They are player number " + players.length);
+    // one possible refactoring is to convert all log to be able to change the destination in one shot
+    log(playerName + " was added");
+    log("They are player number " + players.length);
 
     return true;
   };
@@ -78,22 +76,22 @@ module.exports = function Game() {
     // 50 qns, what if .shift() happen 51 times
     // refactoring does not bother with changing the behaviour
     // after refactoring u can remove the bug
-    if (currentCategory() == "Pop") console.log(popQuestions.shift());
-    if (currentCategory() == "Science") console.log(scienceQuestions.shift());
-    if (currentCategory() == "Sports") console.log(sportsQuestions.shift());
-    if (currentCategory() == "Rock") console.log(rockQuestions.shift());
+    if (currentCategory() == "Pop") log(popQuestions.shift());
+    if (currentCategory() == "Science") log(scienceQuestions.shift());
+    if (currentCategory() == "Sports") log(sportsQuestions.shift());
+    if (currentCategory() == "Rock") log(rockQuestions.shift());
   };
 
   this.roll = function(roll) {
-    console.log(players[currentPlayer] + " is the current player");
-    console.log("They have rolled a " + roll);
+    log(players[currentPlayer] + " is the current player");
+    log("They have rolled a " + roll);
 
     // there are some duplicate codes....
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {
         isGettingOutOfPenaltyBox = true;
 
-        console.log(
+        log(
           players[currentPlayer] + " is getting out of the penalty box"
         );
         places[currentPlayer] = places[currentPlayer] + roll;
@@ -101,13 +99,13 @@ module.exports = function Game() {
           places[currentPlayer] = places[currentPlayer] - 12;
         }
 
-        console.log(
+        log(
           players[currentPlayer] + "'s new location is " + places[currentPlayer]
         );
-        console.log("The category is " + currentCategory());
+        log("The category is " + currentCategory());
         askQuestion();
       } else {
-        console.log(
+        log(
           players[currentPlayer] + " is not getting out of the penalty box"
         );
         isGettingOutOfPenaltyBox = false;
@@ -118,10 +116,10 @@ module.exports = function Game() {
         places[currentPlayer] = places[currentPlayer] - 12;
       }
 
-      console.log(
+      log(
         players[currentPlayer] + "'s new location is " + places[currentPlayer]
       );
-      console.log("The category is " + currentCategory());
+      log("The category is " + currentCategory());
       askQuestion();
     }
   };
@@ -129,9 +127,9 @@ module.exports = function Game() {
   this.wasCorrectlyAnswered = function() {
     if (inPenaltyBox[currentPlayer]) {
       if (isGettingOutOfPenaltyBox) {
-        console.log("Answer was correct!!!!");
+        log("Answer was correct!!!!");
         purses[currentPlayer] += 1;
-        console.log(
+        log(
           players[currentPlayer] +
             " now has " +
             purses[currentPlayer] +
@@ -149,10 +147,10 @@ module.exports = function Game() {
         return true;
       }
     } else {
-      console.log("Answer was correct!!!!");
+      log("Answer was correct!!!!");
 
       purses[currentPlayer] += 1;
-      console.log(
+      log(
         players[currentPlayer] +
           " now has " +
           purses[currentPlayer] +
@@ -169,8 +167,8 @@ module.exports = function Game() {
   };
 
   this.wrongAnswer = function() {
-    console.log("Question was incorrectly answered");
-    console.log(players[currentPlayer] + " was sent to the penalty box");
+    log("Question was incorrectly answered");
+    log(players[currentPlayer] + " was sent to the penalty box");
     inPenaltyBox[currentPlayer] = true;
 
     currentPlayer += 1;
@@ -178,3 +176,8 @@ module.exports = function Game() {
     return true;
   };
 };
+
+function log(message) {
+  // eslint-disable-next-line no-console
+  console.log(message);
+}
