@@ -13,7 +13,7 @@ module.exports = function Game() {
 
   let currentPlayer = 0;
   // instead of array of values, there's only one value here. mismatch.
-  // code busuk... mentally record smth is wrong
+  // code is smelly... mentally record smth is wrong
   let isGettingOutOfPenaltyBox = false;
 
   const didPlayerWin = function() {
@@ -58,7 +58,7 @@ module.exports = function Game() {
     purses[playerCount] = 0;
     inPenaltyBox[playerCount] = false;
 
-    // one possible refactoring is to convert all log to be able to change the destination in one shot
+    // convert console.log to log func using replace all and use eslint-disable-next-line to remove error line
     log(playerName + " was added");
     log("They are player number " + players.length);
 
@@ -86,6 +86,7 @@ module.exports = function Game() {
   };
 
   this.roll = function(roll) {
+    // one possible refactoring is to convert all log to be able to change the destination in one shot
     log(players[currentPlayer] + " is the current player");
     log("They have rolled a " + roll);
 
@@ -97,9 +98,9 @@ module.exports = function Game() {
         log(
           players[currentPlayer] + " is getting out of the penalty box"
         );
-        places[currentPlayer] = places[currentPlayer] + roll;
+        places[currentPlayer] += roll;
         if (places[currentPlayer] > 11) {
-          places[currentPlayer] = places[currentPlayer] - 12;
+          places[currentPlayer] -= 12;
         }
 
         log(
@@ -108,15 +109,13 @@ module.exports = function Game() {
         log("The category is " + currentCategory());
         askQuestion();
       } else {
-        log(
-          players[currentPlayer] + " is not getting out of the penalty box"
-        );
+        log(players[currentPlayer] + " is not getting out of the penalty box");
         isGettingOutOfPenaltyBox = false;
       }
     } else {
-      places[currentPlayer] = places[currentPlayer] + roll;
+      places[currentPlayer] += roll;
       if (places[currentPlayer] > 11) {
-        places[currentPlayer] = places[currentPlayer] - 12;
+        places[currentPlayer] -= 12;
       }
 
       log(
