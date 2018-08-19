@@ -90,7 +90,7 @@ module.exports = function Game() {
     log(players[currentPlayer] + " is the current player");
     log("They have rolled a " + roll);
 
-    // there are some duplicate codes....
+    // added playersNewLocation func
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {
         isGettingOutOfPenaltyBox = true;
@@ -119,44 +119,34 @@ module.exports = function Game() {
   this.wasCorrectlyAnswered = function() {
     if (inPenaltyBox[currentPlayer]) {
       if (isGettingOutOfPenaltyBox) {
-        log("Answer was correct!!!!");
-        purses[currentPlayer] += 1;
-        log(
-          players[currentPlayer] +
-            " now has " +
-            purses[currentPlayer] +
-            " Gold Coins."
-        );
-
-        var winner = didPlayerWin();
-        currentPlayer += 1;
-        if (currentPlayer == players.length) currentPlayer = 0;
-
-        return winner;
+        return checkAnswer();
       } else {
         currentPlayer += 1;
         if (currentPlayer == players.length) currentPlayer = 0;
         return true;
       }
-    } else {
-      log("Answer was correct!!!!");
-
-      purses[currentPlayer] += 1;
-      log(
-        players[currentPlayer] +
-          " now has " +
-          purses[currentPlayer] +
-          " Gold Coins."
-      );
-
-      var winner = didPlayerWin();
-
-      currentPlayer += 1;
-      if (currentPlayer == players.length) currentPlayer = 0;
-
-      return winner;
     }
+
+    return checkAnswer();
   };
+
+  function checkAnswer() {
+    log("Answer was correct!!!!");
+
+    purses[currentPlayer] += 1;
+    log(
+      players[currentPlayer] +
+        " now has " +
+        purses[currentPlayer] +
+        " Gold Coins."
+    );
+
+    var winner = didPlayerWin();
+    currentPlayer += 1;
+    if (currentPlayer == players.length) currentPlayer = 0;
+
+    return winner;
+  }
 
   this.wrongAnswer = function() {
     log("Question was incorrectly answered");
