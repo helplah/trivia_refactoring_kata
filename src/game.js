@@ -94,37 +94,27 @@ module.exports = function Game() {
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {
         isGettingOutOfPenaltyBox = true;
-
-        log(
-          players[currentPlayer] + " is getting out of the penalty box"
-        );
-        places[currentPlayer] += roll;
-        if (places[currentPlayer] > 11) {
-          places[currentPlayer] -= 12;
-        }
-
-        log(
-          players[currentPlayer] + "'s new location is " + places[currentPlayer]
-        );
-        log("The category is " + currentCategory());
-        askQuestion();
+        log(players[currentPlayer] + " is getting out of the penalty box");
       } else {
         log(players[currentPlayer] + " is not getting out of the penalty box");
         isGettingOutOfPenaltyBox = false;
+        return;
       }
-    } else {
-      places[currentPlayer] += roll;
-      if (places[currentPlayer] > 11) {
-        places[currentPlayer] -= 12;
-      }
-
-      log(
-        players[currentPlayer] + "'s new location is " + places[currentPlayer]
-      );
-      log("The category is " + currentCategory());
-      askQuestion();
     }
+
+    playersNewLocation(roll);
   };
+
+  function playersNewLocation(roll) {
+    places[currentPlayer] += roll;
+    if (places[currentPlayer] > 11) {
+      places[currentPlayer] -= 12;
+    }
+
+    log(players[currentPlayer] + "'s new location is " + places[currentPlayer]);
+    log("The category is " + currentCategory());
+    askQuestion();
+  }
 
   this.wasCorrectlyAnswered = function() {
     if (inPenaltyBox[currentPlayer]) {
