@@ -94,7 +94,7 @@ module.exports = function Game() {
         isGettingOutOfPenaltyBox = true;
         log(players[currentPlayer] + " is getting out of the penalty box");
 
-        this.getNewPlaceAfterRolling(roll);
+        getNewPlaceAfterRolling(roll);
         log("The category is " + currentCategory());
         askQuestion();
       } else {
@@ -102,20 +102,20 @@ module.exports = function Game() {
         log(players[currentPlayer] + " is not getting out of the penalty box");
       }
     } else {
-      this.getNewPlaceAfterRolling(roll);
+      getNewPlaceAfterRolling(roll);
       log("The category is " + currentCategory());
       askQuestion();
     }
   };
 
-  this.getNewPlaceAfterRolling = roll => {
+  function getNewPlaceAfterRolling(roll) {
     places[currentPlayer] = places[currentPlayer] + roll > 11 ? 
                             places[currentPlayer] + roll - 12: 
                             places[currentPlayer] + roll;
     log(players[currentPlayer] + "'s new location is " + places[currentPlayer]);
   }
 
-  this.addCoinToCurrentPlayerPurse = () => {
+  function addCoinToCurrentPlayerPurse() {
     log("Answer was correct!!!!");
     purses[currentPlayer] += 1;
     log(players[currentPlayer] + " now has " + purses[currentPlayer] + " Gold Coins.");
@@ -124,26 +124,26 @@ module.exports = function Game() {
   this.wasCorrectlyAnswered = () => {
     if (inPenaltyBox[currentPlayer]) {
       if (isGettingOutOfPenaltyBox) {
-        this.addCoinToCurrentPlayerPurse();
+        addCoinToCurrentPlayerPurse();
         let winner = didPlayerNotWin();
-        this.resetPlayersTurn();
+        resetPlayersTurn();
 
         return winner;
       } else {
-        this.resetPlayersTurn();
+        resetPlayersTurn();
 
         return true;
       }
     } else {
-      this.addCoinToCurrentPlayerPurse();
+      addCoinToCurrentPlayerPurse();
       let winner = didPlayerNotWin();
-      this.resetPlayersTurn();
+      resetPlayersTurn();
 
       return winner;
     }
   };
 
-  this.resetPlayersTurn = () => {
+  function resetPlayersTurn() {
     currentPlayer += 1;
     if (currentPlayer == players.length) currentPlayer = 0;
   }
@@ -153,7 +153,7 @@ module.exports = function Game() {
     log(players[currentPlayer] + " was sent to the penalty box");
     inPenaltyBox[currentPlayer] = true;
 
-    this.resetPlayersTurn();
+    resetPlayersTurn();
     return true;
   };
 };
