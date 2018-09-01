@@ -16,11 +16,11 @@ module.exports = function Game() {
   // code busuk... mentally record smth is wrong
   let isGettingOutOfPenaltyBox = false;
 
-  const didPlayerNotWin = function() {
+  const didPlayerNotWin = () => {
     return !(purses[currentPlayer] == 6);
   };
 
-  const currentCategory = function() {
+  const currentCategory = () => {
     switch (places[currentPlayer]) {
       case 0:
       case 4:
@@ -52,7 +52,7 @@ module.exports = function Game() {
   // removed this.isPlayable func as it is not being used
 
   // removed this.HowManyPlayers since u can use players.length instead
-  this.add = function(playerName) {
+  this.add = playerName => {
     const playerCount = players.push(playerName) - 1;
     places[playerCount] = 0;
     purses[playerCount] = 0;
@@ -65,7 +65,7 @@ module.exports = function Game() {
     return true;
   };
 
-  const askQuestion = function() {
+  const askQuestion = () => {
     /* there are 50 qns, what if .shift() happen 51 times
       refactoring does not bother with changing the behaviour, after refactoring u can remove the bug
     */
@@ -85,26 +85,21 @@ module.exports = function Game() {
     }
   };
 
-  this.roll = function(roll) {
+  this.roll = roll => {
     log(players[currentPlayer] + " is the current player");
     log("They have rolled a " + roll);
 
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {
         isGettingOutOfPenaltyBox = true;
-
-        log(
-          players[currentPlayer] + " is getting out of the penalty box"
-        );
+        log(players[currentPlayer] + " is getting out of the penalty box");
 
         this.getNewPlaceAfterRolling(roll);
         log("The category is " + currentCategory());
         askQuestion();
       } else {
         isGettingOutOfPenaltyBox = false;
-        log(
-          players[currentPlayer] + " is not getting out of the penalty box"
-        );
+        log(players[currentPlayer] + " is not getting out of the penalty box");
       }
     } else {
       this.getNewPlaceAfterRolling(roll);
@@ -117,9 +112,7 @@ module.exports = function Game() {
     places[currentPlayer] = places[currentPlayer] + roll > 11 ? 
                             places[currentPlayer] + roll - 12: 
                             places[currentPlayer] + roll;
-    log(
-      players[currentPlayer] + "'s new location is " + places[currentPlayer]
-    );
+    log(players[currentPlayer] + "'s new location is " + places[currentPlayer]);
   }
 
   this.addCoinToCurrentPlayerPurse = () => {
@@ -128,7 +121,7 @@ module.exports = function Game() {
     log(players[currentPlayer] + " now has " + purses[currentPlayer] + " Gold Coins.");
   }
 
-  this.wasCorrectlyAnswered = function() {
+  this.wasCorrectlyAnswered = () => {
     if (inPenaltyBox[currentPlayer]) {
       if (isGettingOutOfPenaltyBox) {
         this.addCoinToCurrentPlayerPurse();
@@ -155,13 +148,12 @@ module.exports = function Game() {
     if (currentPlayer == players.length) currentPlayer = 0;
   }
 
-  this.wrongAnswer = function() {
+  this.wrongAnswer = () => {
     log("Question was incorrectly answered");
     log(players[currentPlayer] + " was sent to the penalty box");
     inPenaltyBox[currentPlayer] = true;
 
-    currentPlayer += 1;
-    if (currentPlayer == players.length) currentPlayer = 0;
+    this.resetPlayersTurn();
     return true;
   };
 };
