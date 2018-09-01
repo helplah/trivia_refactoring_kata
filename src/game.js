@@ -16,7 +16,7 @@ module.exports = function Game() {
   // code busuk... mentally record smth is wrong
   let isGettingOutOfPenaltyBox = false;
 
-  const didPlayerWin = function() {
+  const didPlayerNotWin = function() {
     return !(purses[currentPlayer] == 6);
   };
 
@@ -89,7 +89,6 @@ module.exports = function Game() {
     log(players[currentPlayer] + " is the current player");
     log("They have rolled a " + roll);
 
-    // there are some duplicate codes....
     if (inPenaltyBox[currentPlayer]) {
       if (roll % 2 != 0) {
         isGettingOutOfPenaltyBox = true;
@@ -99,10 +98,6 @@ module.exports = function Game() {
         );
 
         this.getNewPlaceAfterRolling(roll);
-
-        log(
-          players[currentPlayer] + "'s new location is " + places[currentPlayer]
-        );
         log("The category is " + currentCategory());
         askQuestion();
       } else {
@@ -113,10 +108,6 @@ module.exports = function Game() {
       }
     } else {
       this.getNewPlaceAfterRolling(roll);
-
-      log(
-        players[currentPlayer] + "'s new location is " + places[currentPlayer]
-      );
       log("The category is " + currentCategory());
       askQuestion();
     }
@@ -126,58 +117,43 @@ module.exports = function Game() {
     places[currentPlayer] = places[currentPlayer] + roll > 11 ? 
                             places[currentPlayer] + roll - 12: 
                             places[currentPlayer] + roll;
-  }
-
-  /*
-  function () {
     log(
       players[currentPlayer] + "'s new location is " + places[currentPlayer]
     );
-    log("The category is " + currentCategory());
-    askQuestion();
-  }*/
+  }
+
+  this.addCoinToCurrentPlayerPurse = () => {
+    log("Answer was correct!!!!");
+    purses[currentPlayer] += 1;
+    log(players[currentPlayer] + " now has " + purses[currentPlayer] + " Gold Coins.");
+  }
 
   this.wasCorrectlyAnswered = function() {
     if (inPenaltyBox[currentPlayer]) {
       if (isGettingOutOfPenaltyBox) {
-        log("Answer was correct!!!!");
-        purses[currentPlayer] += 1;
-        log(
-          players[currentPlayer] +
-            " now has " +
-            purses[currentPlayer] +
-            " Gold Coins."
-        );
-
-        var winner = didPlayerWin();
-        currentPlayer += 1;
-        if (currentPlayer == players.length) currentPlayer = 0;
+        this.addCoinToCurrentPlayerPurse();
+        let winner = didPlayerNotWin();
+        this.resetPlayersTurn();
 
         return winner;
       } else {
-        currentPlayer += 1;
-        if (currentPlayer == players.length) currentPlayer = 0;
+        this.resetPlayersTurn();
+
         return true;
       }
     } else {
-      log("Answer was correct!!!!");
-
-      purses[currentPlayer] += 1;
-      log(
-        players[currentPlayer] +
-          " now has " +
-          purses[currentPlayer] +
-          " Gold Coins."
-      );
-
-      var winner = didPlayerWin();
-
-      currentPlayer += 1;
-      if (currentPlayer == players.length) currentPlayer = 0;
+      this.addCoinToCurrentPlayerPurse();
+      let winner = didPlayerNotWin();
+      this.resetPlayersTurn();
 
       return winner;
     }
   };
+
+  this.resetPlayersTurn = () => {
+    currentPlayer += 1;
+    if (currentPlayer == players.length) currentPlayer = 0;
+  }
 
   this.wrongAnswer = function() {
     log("Question was incorrectly answered");
