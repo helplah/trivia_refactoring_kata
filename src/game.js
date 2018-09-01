@@ -13,7 +13,7 @@ module.exports = function Game() {
 
   let currentPlayer = 0;
   // instead of array of values, there's only one value here. mismatch.
-  // code busuk... mentally record smth is wrong
+  // code is smelly... mentally record smth is wrong
   let isGettingOutOfPenaltyBox = false;
 
   const didPlayerNotWin = () => {
@@ -58,7 +58,7 @@ module.exports = function Game() {
     purses[playerCount] = 0;
     inPenaltyBox[playerCount] = false;
 
-    // one possible refactoring is to convert all log to be able to change the destination in one shot
+    // convert console.log to log func using replace all and use eslint-disable-next-line to remove error line
     log(playerName + " was added");
     log("They are player number " + players.length);
 
@@ -141,7 +141,7 @@ module.exports = function Game() {
 
       return winner;
     }
-  };
+  }
 
   function resetPlayersTurn() {
     currentPlayer += 1;
