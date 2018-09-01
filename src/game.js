@@ -41,7 +41,7 @@ module.exports = function Game() {
 
   //removed this.createRockQuestions func
 
-  for (var i = 0; i < 50; i++) {
+  for (let i = 0; i < 50; i++) {
     popQuestions.push("Pop Question " + i);
     scienceQuestions.push("Science Question " + i);
     sportsQuestions.push("Sports Question " + i);
@@ -65,7 +65,7 @@ module.exports = function Game() {
     return true;
   };
 
-  var askQuestion = function() {
+  const askQuestion = function() {
     /* there are 50 qns, what if .shift() happen 51 times
       refactoring does not bother with changing the behaviour, after refactoring u can remove the bug
     */
@@ -97,10 +97,8 @@ module.exports = function Game() {
         log(
           players[currentPlayer] + " is getting out of the penalty box"
         );
-        places[currentPlayer] = places[currentPlayer] + roll;
-        if (places[currentPlayer] > 11) {
-          places[currentPlayer] = places[currentPlayer] - 12;
-        }
+
+        this.getNewPlaceAfterRolling(roll);
 
         log(
           players[currentPlayer] + "'s new location is " + places[currentPlayer]
@@ -108,16 +106,13 @@ module.exports = function Game() {
         log("The category is " + currentCategory());
         askQuestion();
       } else {
+        isGettingOutOfPenaltyBox = false;
         log(
           players[currentPlayer] + " is not getting out of the penalty box"
         );
-        isGettingOutOfPenaltyBox = false;
       }
     } else {
-      places[currentPlayer] = places[currentPlayer] + roll;
-      if (places[currentPlayer] > 11) {
-        places[currentPlayer] = places[currentPlayer] - 12;
-      }
+      this.getNewPlaceAfterRolling(roll);
 
       log(
         players[currentPlayer] + "'s new location is " + places[currentPlayer]
@@ -126,6 +121,21 @@ module.exports = function Game() {
       askQuestion();
     }
   };
+
+  this.getNewPlaceAfterRolling = roll => {
+    places[currentPlayer] = places[currentPlayer] + roll > 11 ? 
+                            places[currentPlayer] + roll - 12: 
+                            places[currentPlayer] + roll;
+  }
+
+  /*
+  function () {
+    log(
+      players[currentPlayer] + "'s new location is " + places[currentPlayer]
+    );
+    log("The category is " + currentCategory());
+    askQuestion();
+  }*/
 
   this.wasCorrectlyAnswered = function() {
     if (inPenaltyBox[currentPlayer]) {
